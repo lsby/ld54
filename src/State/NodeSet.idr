@@ -87,6 +87,7 @@ export
     False => 重建子节点关系 $ MK_节点集 root $ map (节点集处理事件 b e) list
 节点集处理事件 _ _ s = s
 
+export
 节点集转实体集 : 节点集 -> 实体集
 节点集转实体集 (MK_节点集 root list) =
     let 所有直接子节点 = map (.根节点) list

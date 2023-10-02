@@ -7,7 +7,7 @@ import State.NodeSet
 import State.Barrier
 
 public export
-data 场景 = 开始画面 | 游戏画面
+data 场景 = 开始画面 | 第一关 | 第二关
 
 export
 record 场景控制器 where
