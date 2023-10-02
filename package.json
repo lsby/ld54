@@ -1,0 +1,17 @@
+{
+  "name": "pro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/exec/Main.js",
+    "build": "idris2 --cg javascript --build",
+    "watch": "onchange -i \"./src/**/*.idr\" \"pro.ipkg\" -- npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "onchange": "^7.1.0"
+  }
+}

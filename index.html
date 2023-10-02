@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <style>
+    html,
+    body,
+    #app {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+  <body>
+    <div
+      id="app"
+      style="display: flex; justify-content: space-around; align-items: center"
+    ></div>
+  </body>
+  <script src="/lib/momentum/momentum.js"></script>
+  <script src="/build/exec/Main.js"></script>
+  <script>
+    document.oncontextmenu = function () {
+      return false;
+    };
+  </script>
+</html>
