@@ -55,24 +55,32 @@ export
     子节点集转节点集 : (根节点 : 节点) -> 子节点集 -> 节点集
     子节点集转节点集 root (MK_子节点集 p img l r list) = let r = 创建节点 p img $ Just $ 创建父节点信息 root l r in MK_节点集 r (map (子节点集转节点集 r) list)
 
-搜索节点集 : (条件 : 节点 -> Bool) -> 节点集 -> Bool
-搜索节点集 c (MK_节点集 root Nil) = if c root then True else False
-搜索节点集 c (MK_节点集 root list) = if c root then True
-                                     else if (length $ filter (\a => a == True) (map (搜索节点集 c) list)) == 0 then False
+-- 任何一个满足都返回真
+搜索节点集存在 : (条件 : 节点 -> Bool) -> 节点集 -> Bool
+搜索节点集存在 c (MK_节点集 root Nil) = if c root then True else False
+搜索节点集存在 c (MK_节点集 root list) = if c root then True
+                                     else if (length $ filter (\a => a == True) (map (搜索节点集存在 c) list)) == 0 then False
+                                     else True
+
+-- 必须全部满足才返回真
+搜索节点集任意 : (条件 : 节点 -> Bool) -> 节点集 -> Bool
+搜索节点集任意 c (MK_节点集 root Nil) = if c root then True else False
+搜索节点集任意 c (MK_节点集 root list) = if c root == False then False
+                                     else if (length $ filter (\a => a == False) (map (搜索节点集任意 c) list)) /= 0 then False
                                      else True
 
 -- todo 这应该可以写得更好
 mutual
     映射节点集第一个' : (条件 : 节点 -> Bool) -> (映射函数 : 节点 -> 节点) -> List 节点集 -> List 节点集
     映射节点集第一个' c f Nil = Nil
-    映射节点集第一个' c f (x :: xs) = if 搜索节点集 c x
+    映射节点集第一个' c f (x :: xs) = if 搜索节点集存在 c x
                                       then 映射节点集第一个 c f x :: xs
                                       else x :: 映射节点集第一个' c f xs
 
     映射节点集第一个 : (条件 : 节点 -> Bool) -> (映射函数 : 节点 -> 节点) -> 节点集 -> 节点集
     映射节点集第一个 c f n@(MK_节点集 root Nil) = if c root then {根节点 := f root} n else n
     映射节点集第一个 c f n@(MK_节点集 root (x :: xs)) = if c root then {根节点 := f root} n
-                                                        else if 搜索节点集 c x then {子节点们 := 映射节点集第一个 c f x :: xs } n
+                                                        else if 搜索节点集存在 c x then {子节点们 := 映射节点集第一个 c f x :: xs } n
                                                         else {子节点们 := x :: 映射节点集第一个' c f xs } n
 
 export
@@ -82,10 +90,14 @@ export
 节点集处理事件 b e@(MK_鼠标移动事件 p) n@(MK_节点集 root list) = case 获得节点选中状态 root of
     True =>
         let 预计的结果 = 刷新节点集整体位置 $ MK_节点集 (节点移动 p root) list
-            存在重叠 = 搜索节点集 (\a => 区域重叠 b $ 获得节点区域 a) 预计的结果
+            存在重叠 = 搜索节点集存在 (\a => 区域有重叠 b $ 获得节点区域 a) 预计的结果
         in if 存在重叠 then n else 预计的结果
     False => 重建子节点关系 $ MK_节点集 root $ map (节点集处理事件 b e) list
 节点集处理事件 _ _ s = s
+
+export
+判定节点集在区域中 : 区域 -> 节点集 -> Bool
+判定节点集在区域中 area ns = 搜索节点集任意 (\a => 区域完全重叠 (获得节点区域 a) area) ns
 
 export
 节点集转实体集 : 节点集 -> 实体集

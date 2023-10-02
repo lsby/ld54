@@ -16,6 +16,7 @@ import State.Barrier
 import State.Scene.Scene
 import State.Start
 import State.Bed
+import State.Next
 
 public export
 record 状态 where
@@ -27,6 +28,8 @@ record 状态 where
     障碍 : 障碍
     主角 : 主角
     床 : 床
+    下一关按钮 : 下一关按钮
+    出现过关按钮 : Bool
 
 export
 游戏状态 状态 where
@@ -42,4 +45,6 @@ export
                      , 障碍 = 创建障碍 (创建矩形 (MK_大小 100 450) (MK_颜色 "#FFEEDD"))
                      , 主角 = 创建主角 node_img
                      , 床 = 创建床
+                     , 下一关按钮 = 创建下一关按钮
+                     , 出现过关按钮 = False
                      }
