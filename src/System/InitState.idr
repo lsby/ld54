@@ -15,6 +15,7 @@ import State.Protagonist
 import State.Barrier
 import State.Scene.Scene
 import State.Start
+import State.Bed
 
 public export
 record 状态 where
@@ -25,6 +26,7 @@ record 状态 where
     你好世界 : 你好世界
     障碍 : 障碍
     主角 : 主角
+    床 : 床
 
 export
 游戏状态 状态 where
@@ -39,4 +41,5 @@ export
                      , 你好世界 = 创建你好世界 $ MK_坐标 0 0
                      , 障碍 = 创建障碍 (创建矩形 (MK_大小 100 450) (MK_颜色 "#FFEEDD"))
                      , 主角 = 创建主角 node_img
+                     , 床 = 创建床
                      }

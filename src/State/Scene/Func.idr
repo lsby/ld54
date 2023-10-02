@@ -9,6 +9,7 @@ import State.Protagonist
 import State.Barrier
 import State.Scene.Scene
 import State.Start
+import State.Bed
 import Hby.Game.Base.Area
 
 export
@@ -20,6 +21,7 @@ export
               , 创建显示对象 s.系统信息
               , 创建显示对象 s.障碍
               , 创建显示对象 s.主角
+              , 创建显示对象 s.床
               ]
     第二关 => []
 
