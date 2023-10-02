@@ -17,6 +17,10 @@ export
 创建矩形 : 大小 -> 颜色 -> 矩形
 创建矩形 = MK_矩形
 
+export
+获得大小 : 矩形 -> 大小
+获得大小 a = a.大小
+
 %foreign """
 javascript:lambda:(ctx, x, y, w, h, ys) => () => {
     ctx.fillStyle = ys

@@ -76,13 +76,16 @@ mutual
                                                         else {子节点们 := x :: 映射节点集第一个' c f xs } n
 
 export
-节点集处理事件 : 事件 -> 节点集 -> 节点集
-节点集处理事件 e@(MK_鼠标按下事件 p) n@(MK_节点集 root list) = 重建子节点关系 $ 映射节点集第一个 (命中节点判断 p) (设置节点选中状态 True) n
-节点集处理事件 e@(MK_鼠标弹起事件 p) (MK_节点集 root list) = 重建子节点关系 $ MK_节点集 (设置节点选中状态 False root) (map (节点集处理事件 e) list)
-节点集处理事件 e@(MK_鼠标移动事件 p) (MK_节点集 root list) = case 获得节点选中状态 root of
-    True => 刷新节点集整体位置 $ MK_节点集 (节点移动 p root) list
-    False => 重建子节点关系 $ MK_节点集 root $ map (节点集处理事件 e) list
-节点集处理事件 _ s = s
+节点集处理事件 : (障碍区域 : 区域) -> 事件 -> 节点集 -> 节点集
+节点集处理事件 _ e@(MK_鼠标按下事件 p) n@(MK_节点集 root list) = 重建子节点关系 $ 映射节点集第一个 (命中节点判断 p) (设置节点选中状态 True) n
+节点集处理事件 b e@(MK_鼠标弹起事件 p) (MK_节点集 root list) = 重建子节点关系 $ MK_节点集 (设置节点选中状态 False root) (map (节点集处理事件 b e) list)
+节点集处理事件 b e@(MK_鼠标移动事件 p) n@(MK_节点集 root list) = case 获得节点选中状态 root of
+    True =>
+        let 预计的结果 = 刷新节点集整体位置 $ MK_节点集 (节点移动 p root) list
+            存在重叠 = 搜索节点集 (\a => 区域重叠 b $ 获得节点区域 a) 预计的结果
+        in if 存在重叠 then n else 预计的结果
+    False => 重建子节点关系 $ MK_节点集 root $ map (节点集处理事件 b e) list
+节点集处理事件 _ _ s = s
 
 节点集转实体集 : 节点集 -> 实体集
 节点集转实体集 (MK_节点集 root list) =
