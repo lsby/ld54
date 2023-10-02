@@ -7,7 +7,7 @@ import State.NodeSet
 import State.Barrier
 
 public export
-data 场景 = 开始画面 | 第一关 | 第二关
+data 场景 = 开始画面 | 第一关 | 第二关 | 第三关
 
 export
 record 场景控制器 where
@@ -16,7 +16,7 @@ record 场景控制器 where
 
 export
 创建场景控制器 : 场景控制器
-创建场景控制器 = MK_场景控制器 开始画面
+创建场景控制器 = MK_场景控制器 第三关
 
 export
 获得当前场景 : 场景控制器 -> 场景
